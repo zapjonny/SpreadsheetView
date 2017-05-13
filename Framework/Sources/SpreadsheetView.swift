@@ -9,17 +9,36 @@
 import UIKit
 
 public class SpreadsheetView: UIView {
+    /// The object that provides the data for the collection view.
+    ///
+    /// - Note: The data source must adopt the `SpreadsheetViewDataSource` protocol.
+    ///   The spreadsheet view maintains a weak reference to the data source object.
     public weak var dataSource: SpreadsheetViewDataSource? {
         didSet {
             resetTouchHandlers(to: [tableView, columnHeaderView, rowHeaderView, cornerView])
             reloadData()
         }
     }
+    /// The object that acts as the delegate of the spreadsheet view.
+    /// - Note: The delegate must adopt the `SpreadsheetViewDelegate` protocol.
+    ///   The spreadsheet view maintains a weak reference to the delegate object.
+    ///
+    ///   The delegate object is responsible for managing selection behavior and interactions with individual items.
     public weak var delegate: SpreadsheetViewDelegate?
 
+    /// The horizontal and vertical spacing between cells.
+    /// 
+    /// - Note: The default spacing is `(1.0, 1.0)`. Negative values are not supported.
     public var intercellSpacing = CGSize(width: 1, height: 1)
     public var gridStyle: GridStyle = .solid(width: 1, color: .lightGray)
 
+    /// A Boolean value that indicates whether users can select cells in the spreadsheet view.
+    ///
+    /// - Note: If the value of this property is `true` (the default), users can select cells.
+    ///   If you want more fine-grained control over the selection of cells,
+    ///   you must provide a delegate object and implement the appropriate methods of the `SpreadsheetViewDelegate` protocol.
+    ///
+    /// - SeeAlso: `allowsMultipleSelection`
     public var allowsSelection = true {
         didSet {
             if !allowsSelection {
@@ -27,6 +46,15 @@ public class SpreadsheetView: UIView {
             }
         }
     }
+    /// A Boolean value that determines whether users can select more than one cell in the spreadsheet view.
+    ///
+    /// - Note: This property controls whether multiple cells can be selected simultaneously.
+    ///   The default value of this property is `false`.
+    ///
+    ///   When the value of this property is true, tapping a cell adds it to the current selection (assuming the delegate permits the cell to be selected).
+    ///   Tapping the cell again removes it from the selection.
+    ///
+    /// - SeeAlso: `allowsSelection`
     public var allowsMultipleSelection = false {
         didSet {
             if allowsMultipleSelection {
@@ -35,16 +63,35 @@ public class SpreadsheetView: UIView {
         }
     }
 
-    public var showsVerticalScrollIndicator = true {
-        didSet {
-            overlayView.showsVerticalScrollIndicator = showsVerticalScrollIndicator
-        }
-    }
+    /// A Boolean value that controls whether the horizontal scroll indicator is visible.
+    ///
+    /// The default value is `true`. The indicator is visible while tracking is underway and fades out after tracking.
     public var showsHorizontalScrollIndicator = true {
         didSet {
             overlayView.showsHorizontalScrollIndicator = showsHorizontalScrollIndicator
         }
     }
+    /// A Boolean value that controls whether the vertical scroll indicator is visible.
+    ///
+    /// The default value is `true`. The indicator is visible while tracking is underway and fades out after tracking.
+    public var showsVerticalScrollIndicator = true {
+        didSet {
+            overlayView.showsVerticalScrollIndicator = showsVerticalScrollIndicator
+        }
+    }
+
+    /// A Boolean value that controls whether the scroll-to-top gesture is enabled.
+    ///
+    /// - Note: The scroll-to-top gesture is a tap on the status bar. When a user makes this gesture,
+    /// the system asks the scroll view closest to the status bar to scroll to the top.
+    /// If that scroll view has `scrollsToTop` set to `false`, its delegate returns false from `scrollViewShouldScrollToTop(_:)`, 
+    /// or the content is already at the top, nothing happens.
+    ///
+    /// After the scroll view scrolls to the top of the content view, it sends the delegate a `scrollViewDidScrollToTop(_:)` message.
+    ///
+    /// The default value of scrollsToTop is `true`.
+    ///
+    /// On iPhone, the scroll-to-top gesture has no effect if there is more than one scroll view on-screen that has `scrollsToTop` set to `true`.
     public var scrollsToTop: Bool = true {
         didSet {
             tableView.scrollsToTop = scrollsToTop
@@ -67,6 +114,12 @@ public class SpreadsheetView: UIView {
     var circularScrollScalingFactor: (horizontal: Int, vertical: Int) = (1, 1)
     var centerOffset = CGPoint.zero
 
+    /// The view that provides the background appearance.
+    ///
+    /// - Note: The view (if any) in this property is positioned underneath all of the other content and sized automatically to fill the entire bounds of the spreadsheet view.
+    /// The background view does not scroll with the spreadsheet view’s other content. The spreadsheet view maintains a strong reference to the background view object.
+    ///
+    /// This property is nil by default, which displays the background color of the spreadsheet view.
     public var backgroundView: UIView? {
         willSet {
             backgroundView?.removeFromSuperview()
@@ -80,6 +133,11 @@ public class SpreadsheetView: UIView {
         }
     }
 
+    /// Returns an array of visible cells currently displayed by the spreadsheet view.
+    ///
+    /// - Note: This method returns the complete list of visible cells displayed by the collection view.
+    ///
+    /// - Returns: An array of `Cell` objects. If no cells are visible, this method returns an empty array.
     public var visibleCells: [Cell] {
         let cells: [Cell] = Array(columnHeaderView.visibleCells.values) + Array(rowHeaderView.visibleCells.values)
             + Array(cornerView.visibleCells.values) + Array(tableView.visibleCells.values)
