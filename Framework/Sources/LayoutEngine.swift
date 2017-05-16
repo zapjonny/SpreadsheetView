@@ -264,7 +264,7 @@ class LayoutEngine {
         }
 
         let grids: Grids?
-        let border: (borders: Borders?, hasBorders: Bool)
+        let border: (borders: Borders?, hasBorder: Bool)
 
         if !scrollView.visibleCellAddresses.contains(address) {
             let indexPath = IndexPath(row: address.row, column: address.column)
@@ -279,7 +279,7 @@ class LayoutEngine {
             cell.isSelected = selectedIndexPaths.contains(indexPath)
 
             grids = cell.grids
-            border = (cell.borders, cell.hasBorders)
+            border = (cell.borders, cell.hasBorder)
 
             scrollView.insertSubview(cell, at: 0)
             scrollView.visibleCells[address] = cell
@@ -287,14 +287,14 @@ class LayoutEngine {
             if let cell = scrollView.visibleCells[address] {
                 cell.frame = frame
                 grids = cell.grids
-                border = (cell.borders, cell.hasBorders)
+                border = (cell.borders, cell.hasBorder)
             } else {
                 grids = nil
                 border = (nil, false)
             }
         }
 
-        if border.hasBorders {
+        if border.hasBorder {
             visibleBorderAddresses.insert(address)
         }
         if let grids = grids {
