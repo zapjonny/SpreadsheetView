@@ -86,6 +86,10 @@ class SlotCell: Cell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+
+	@IBAction func actionTest() {
+		print("TAP!!!")
+	}
 }
 
 class BlankCell: Cell {
