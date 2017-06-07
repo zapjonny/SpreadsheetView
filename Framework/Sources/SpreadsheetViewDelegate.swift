@@ -81,7 +81,7 @@ public protocol SpreadsheetViewDelegate: class {
     ///   - indexPath: The index path of the cell that was deselected.
     func spreadsheetView(_ spreadsheetView: SpreadsheetView, didDeselectItemAt indexPath: IndexPath)
 	
-	func spreadsheetViewDidScroll(_ spreadsheetView: SpreadsheetView)
+    func spreadsheetViewDidScroll(_ spreadsheetView: SpreadsheetView)
 }
 
 extension SpreadsheetViewDelegate {
