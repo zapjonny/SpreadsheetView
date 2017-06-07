@@ -203,6 +203,7 @@
 				149E6A6A1EADE047000D851D /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		149E6A6A1EADE047000D851D /* Products */ = {
 			isa = PBXGroup;
