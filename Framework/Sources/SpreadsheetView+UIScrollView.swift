@@ -9,21 +9,31 @@
 import UIKit
 
 extension SpreadsheetView {
-    var contentOffset: CGPoint {
+    public override func isKind(of aClass: AnyClass) -> Bool {
+        return rootView.isKind(of: aClass)
+    }
+
+    public var contentOffset: CGPoint {
         get {
-            return rootView.contentOffset
+            return tableView.contentOffset
         }
         set {
-            rootView.contentOffset = newValue
+            tableView.contentOffset = newValue
         }
     }
 
     public var scrollIndicatorInsets: UIEdgeInsets {
         get {
-            return rootView.scrollIndicatorInsets
+            return overlayView.scrollIndicatorInsets
         }
         set {
-            rootView.scrollIndicatorInsets = newValue
+            overlayView.scrollIndicatorInsets = newValue
+        }
+    }
+
+    public var contentSize: CGSize {
+        get {
+            return overlayView.contentSize
         }
     }
 
@@ -64,6 +74,6 @@ extension SpreadsheetView {
 
     func _notifyDidScroll() {
         adjustScrollViewSizes()
-        adjustOverlayViewFrame()
+        adjustOverlayViewContentSize()
     }
 }

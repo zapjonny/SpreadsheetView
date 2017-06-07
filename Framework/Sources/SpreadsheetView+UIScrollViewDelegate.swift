@@ -42,10 +42,10 @@ extension SpreadsheetView: UIScrollViewDelegate {
         overlayView.contentOffset = tableView.contentOffset
 
         setNeedsLayout()
-		
-		if let delegate = self.delegate {
-			delegate.spreadsheetViewDidScroll(self)
-		}
+        
+        if let delegate = self.delegate {
+            delegate.spreadsheetViewDidScroll(self)
+        }
     }
 
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
