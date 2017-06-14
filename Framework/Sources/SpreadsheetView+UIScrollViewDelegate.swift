@@ -49,6 +49,9 @@ extension SpreadsheetView: UIScrollViewDelegate {
     }
 
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+		if let delegate = self.delegate {
+			delegate.spreadsheetViewDidEndScrollingAnimation(self)
+		}
         guard let indexPath = pendingSelectionIndexPath else {
             return
         }

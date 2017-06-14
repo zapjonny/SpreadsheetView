@@ -19,6 +19,7 @@ public protocol SpreadsheetViewDelegate: class {
     func spreadsheetView(_ spreadsheetView: SpreadsheetView, didDeselectItemAt indexPath: IndexPath)
 	
 	func spreadsheetViewDidScroll(_ spreadsheetView: SpreadsheetView)
+	func spreadsheetViewDidEndScrollingAnimation(_ spreadsheetView: SpreadsheetView)
 }
 
 extension SpreadsheetViewDelegate {
